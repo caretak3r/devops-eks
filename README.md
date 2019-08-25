@@ -6,3 +6,4 @@ eks cluster for devops tooling
 - https://github.com/PrivateBin/PrivateBin/wiki/Docker
 - https://hub.docker.com/r/hashicorp/terraform
 - https://falco.org/docs/installation/
+- https://github.com/eliasgranderubio/dagda
