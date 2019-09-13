@@ -44,3 +44,8 @@ variable "prefix" {
   type = string
   default = "DevOps"
 }
+
+variable "whitelist" {
+  type = list(string)
+  default = ["96.64.69.249/32","216.1.21.2/32","199.189.66.234/32","144.121.156.210/32","10.0.0.0/8"]
+}
