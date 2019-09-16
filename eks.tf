@@ -8,7 +8,9 @@ resource "aws_eks_cluster" "devops" {
   role_arn = aws_iam_role.ServiceRole.arn
   vpc_config {
     subnet_ids = data.aws_subnet_ids.private.ids
-    security_group_ids = [data.aws_security_group.cluster.id]
+    security_group_ids = [aws_security_group.AmazonEKSClusterSecurityGroup.id]
+    endpoint_private_access = true
+    endpoint_public_access = false
   }
 
   enabled_cluster_log_types = ["all"]

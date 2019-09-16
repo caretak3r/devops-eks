@@ -17,13 +17,13 @@ POLICY
 }
 
 resource "aws_iam_role_policy_attachment" "AmazonEKSClusterPolicy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = aws_iam_role.ServiceRole.name
+  policy_arn  = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  role        = aws_iam_role.ServiceRole.name
 }
 
 resource "aws_iam_role_policy_attachment" "AmazonEKSServicePolicy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
-  role       = aws_iam_role.ServiceRole.name
+  policy_arn  = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
+  role        = aws_iam_role.ServiceRole.name
 }
 
 data "aws_iam_policy_document" "AmazonCloudWatchMetricsInline" {
@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "AmazonCloudWatchMetricsInline" {
 
 data "aws_iam_policy_document" "AmazonEKSLoadBalancerInline" {
   statement {
-    sid: "AWSELBPolicy"
+    sid = "AWSELBPolicy"
 
     effect = "Allow"
 
@@ -57,15 +57,15 @@ data "aws_iam_policy_document" "AmazonEKSLoadBalancerInline" {
 }
 
 resource "aws_iam_role_policy" "AmazonCloudWatchMetricsPolicy" {
-  name = "AmazonCloudWatchMetricsPolicy"
-  role = aws_iam_role.ServiceRole.name
-  policy = data.aws_iam_policy_document.AmazonCloudWatchMetricsInline.json
+  name        = "AmazonCloudWatchMetricsPolicy"
+  role        = aws_iam_role.ServiceRole.name
+  policy      = data.aws_iam_policy_document.AmazonCloudWatchMetricsInline.json
 }
 
 resource "aws_iam_role_policy" "AmazonEKSLoadBalancerPolicy" {
-  name = "AmazonEKSLoadBalancerPolicy"
-  role = aws_iam_role.ServiceRole.name
-  policy = data.aws_iam_policy_document.AmazonEKSLoadBalancerInline.json
+  name        = "AmazonEKSLoadBalancerPolicy"
+  role        = aws_iam_role.ServiceRole.name
+  policy      = data.aws_iam_policy_document.AmazonEKSLoadBalancerInline.json
 }
 
 # SECTION END
