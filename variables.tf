@@ -1,31 +1,3 @@
-terraform {
-  required_version = ">= 0.12.7"
-}
-
-provider "aws" {
-  version = ">= 2.11"
-  region  = var.aws_region
-  access_key = ""
-  secret_key = ""
-  token = ""
-}
-
-provider "random" {
-  version = "~> 2.1"
-}
-
-provider "local" {
-  version = "~> 1.2"
-}
-
-provider "null" {
-  version = "~> 2.1"
-}
-
-provider "template" {
-  version = "~> 2.1"
-}
-
 variable "aws_region" {
   default = "us-east-1"
 }
@@ -35,8 +7,7 @@ variable "map_accounts" {
   type        = list(string)
 
   default = [
-    "777777777777",
-    "888888888888",
+    "837059289308",
   ]
 }
 
@@ -54,6 +25,23 @@ variable "map_roles" {
       username = "devops"
       groups   = ["system:masters"]
     },
+  ]
+}
+
+variable "map_users" {
+  description = "Additional IAM users to add to the aws-auth configmap."
+  type = list(object({
+    userarn  = string
+    username = string
+    groups   = list(string)
+  }))
+
+  default = [
+    {
+      userarn  = "arn:aws:iam::837059289308:user/devops"
+      username = "devops"
+      groups   = ["system:masters"]
+    }
   ]
 }
 
@@ -82,11 +70,6 @@ output "public" {
 
 output "private" {
   value = data.aws_subnet_ids.private.ids
-}
-
-variable "eks-cluster-name" {
-  type = string
-  default = "devops-eks"
 }
 
 variable "prefix" {
