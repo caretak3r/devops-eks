@@ -1,6 +1,6 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "5.1.0"
+  version = "6.0.0"
   cluster_name = var.prefix
   subnets = data.aws_subnet_ids.private.ids
   vpc_id = data.aws_vpc.shared-vpc.id
@@ -15,7 +15,6 @@ module "eks" {
       name = "${var.prefix}-worker-ng"
       instance_type = "m5.large"
       iam_instance_profile_name = aws_iam_instance_profile.node.name
-
       autoscaling_enabled = true
       protect_from_scale_in = true
       asg_desired_capacity = "2"
@@ -37,7 +36,7 @@ module "eks" {
   ]
 
   worker_security_group_id = aws_security_group.AmazonEKSWorkerNodeSecurityGroup.id
-  cluster_enabled_log_types = ["all"]
+  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access = false
   cluster_iam_role_name = aws_iam_role.ServiceRole.name
@@ -45,7 +44,6 @@ module "eks" {
   cluster_security_group_id = aws_security_group.AmazonEKSClusterSecurityGroup.id
 
   map_users = var.map_users
-
   manage_aws_auth = true
   write_kubeconfig = true #
   config_output_path = "/root/.kube/"
