@@ -85,7 +85,3 @@ variable "whitelist" {
   type = list(string)
   default = ["96.64.69.249/32","216.1.21.2/32","199.189.66.234/32","144.121.156.210/32","10.0.0.0/8"]
 }
-
-variable "cluster_security_group_id" {
-  value = aws_security_group.AmazonEKSClusterSecurityGroup.id
-}
