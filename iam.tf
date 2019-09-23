@@ -71,6 +71,7 @@ resource "aws_iam_role_policy" "AmazonEKSLoadBalancerPolicy" {
 # SECTION END
 
 resource "aws_iam_role" "NodeInstanceRole" {
+  name = "${var.prefix}-NodeInstanceRole"
   assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
@@ -83,6 +84,7 @@ resource "aws_iam_role" "NodeInstanceRole" {
       "Action": "sts:AssumeRole"
     }
   ]
+}
 POLICY
 }
 
