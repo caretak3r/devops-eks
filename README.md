@@ -7,12 +7,14 @@ using Terraform to deploy an EKS cluster and nodegroups, which follows environme
 - https://hub.docker.com/r/hashicorp/terraform
 - https://falco.org/docs/installation/
 - https://github.com/eliasgranderubio/dagda
+- https://docs.aws.amazon.com/en_pv/eks/latest/userguide/calico.html
 
 ### kubernetes tools to install
  
  - Kubernetes dashboard
  - Kiali (istio)
  - grafana + prometheus
+ - Calico
 
 
 ## Strategy
