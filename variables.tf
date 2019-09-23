@@ -41,7 +41,7 @@ variable "map_users" {
       userarn  = "arn:aws:iam::837059289308:user/devops"
       username = "devops"
       groups   = ["system:masters"]
-    }
+    },
   ]
 }
 
@@ -58,6 +58,10 @@ data "aws_subnet_ids" "public" {
 data "aws_subnet_ids" "private" {
   vpc_id = data.aws_vpc.shared-vpc.id
   tags = { Network = "Private" }
+  filter {
+    name = "tag:Name"
+    values = ["cadent-ss-private-a", "cadent-ss-private-f"]
+  }
 }
 
 output "vpc" {
@@ -80,4 +84,8 @@ variable "prefix" {
 variable "whitelist" {
   type = list(string)
   default = ["96.64.69.249/32","216.1.21.2/32","199.189.66.234/32","144.121.156.210/32","10.0.0.0/8"]
+}
+
+variable "cluster_security_group_id" {
+  value = aws_security_group.AmazonEKSClusterSecurityGroup.id
 }
