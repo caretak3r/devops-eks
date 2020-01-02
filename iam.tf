@@ -1,5 +1,7 @@
+# todo: ensure all assets are tagged, ensure kubernetes-specific key is used kubernetes.io/cluster/xyz = Shared
 resource "aws_iam_role" "ServiceRole" {
-  name = "${var.prefix}-ServiceRole"
+  name = "${var.prefix}EKSServiceRole"
+  description = "IAM service role to govern EKS services"
   assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
@@ -57,13 +59,13 @@ data "aws_iam_policy_document" "AmazonEKSLoadBalancerInline" {
 }
 
 resource "aws_iam_role_policy" "AmazonCloudWatchMetricsPolicy" {
-  name        = "AmazonCloudWatchMetricsPolicy"
+  name        = "${var.prefix}CloudWatchMetricsPolicy"
   role        = aws_iam_role.ServiceRole.name
   policy      = data.aws_iam_policy_document.AmazonCloudWatchMetricsInline.json
 }
 
 resource "aws_iam_role_policy" "AmazonEKSLoadBalancerPolicy" {
-  name        = "AmazonEKSLoadBalancerPolicy"
+  name        = "${var.prefix}EKSLoadBalancerPolicy"
   role        = aws_iam_role.ServiceRole.name
   policy      = data.aws_iam_policy_document.AmazonEKSLoadBalancerInline.json
 }
@@ -71,7 +73,7 @@ resource "aws_iam_role_policy" "AmazonEKSLoadBalancerPolicy" {
 # SECTION END
 
 resource "aws_iam_role" "NodeInstanceRole" {
-  name = "${var.prefix}-NodeInstanceRole"
+  name = "${var.prefix}NodeInstanceRole"
   assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
@@ -109,6 +111,6 @@ resource "aws_iam_role_policy_attachment" "AmazonEKS_CNI_Policy" {
 }
 
 resource "aws_iam_instance_profile" "node" {
-  name      = "AmazonEKSNodeInstanceProfile"
+  name      = "${var.prefix}EKSNodeInstanceProfile"
   role      = aws_iam_role.NodeInstanceRole.name
 }

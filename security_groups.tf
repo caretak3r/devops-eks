@@ -1,6 +1,9 @@
+# todo: ensure tagging is enabled for all assets
+# todo: ensure kubernetes.io/cluster tag is automatically added
+
 resource "aws_security_group" "AmazonEKSClusterSecurityGroup" {
-  name = "${var.prefix}AmazonEKSClusterSecurityGroup"
-  vpc_id = data.aws_vpc.shared-vpc.id
+  name = "${var.prefix}EKSClusterSecurityGroup"
+  vpc_id = data.aws_vpc.vpc.id
   description = "Communication between all nodes in the cluster"
 }
 
@@ -58,7 +61,6 @@ resource "aws_security_group_rule" "controlplane_egress_https" {
   source_security_group_id = aws_security_group.AmazonEKSWorkerNodeSecurityGroup.id
   description = "Allow control plane to communicate with worker nodes in group (workloads using HTTPS port, commonly used with extension API servers)"
 }
-
 
 resource "aws_security_group" "AmazonEKSWorkerNodeSecurityGroup" {
   name = "${var.prefix}AmazonEKSWorkerNodeSecurityGroup"
@@ -127,16 +129,13 @@ resource "aws_security_group_rule" "nodegroup_ingress_elb" {
 #}
 
 resource "aws_security_group" "whitelist" {
-  name = "${var.prefix}AmazonEKSELBSecurityGroup"
-  vpc_id = data.aws_vpc.shared-vpc.id
-  description = "Allow Cadent whitelist"
-
-  tags = {
-    "kubernetes.io/cluster/${var.prefix}" = "owned"
-  }
+  name = "${var.prefix}EKSELBSecurityGroup"
+  vpc_id = data.aws_vpc.default.id
+  description = "Allow whitelist CIDRs access"
 }
 
-resource "aws_security_group_rule" "whitelist_ingress_https" {
+resource "aws_security_group_rule" "whitelist_ingress" {
+  description = "ELB whitelist security group rules; adds Company specific CIDR(s) to the allow on HTTPS"
   from_port = 443
   protocol = "tcp"
   security_group_id = aws_security_group.whitelist.id
@@ -147,7 +146,7 @@ resource "aws_security_group_rule" "whitelist_ingress_https" {
   cidr_blocks = [each.key]
 }
 
-resource "aws_security_group_rule" "whitelist_egress_tcp" {
+resource "aws_security_group_rule" "whitelist_egress" {
   from_port = 0
   protocol = "-1"
   security_group_id = aws_security_group.whitelist.id

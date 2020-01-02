@@ -22,3 +22,15 @@ output "region" {
   description = "AWS region."
   value       = var.aws_region
 }
+
+output "vpc" {
+  value = data.aws_vpc.shared-vpc.id
+}
+
+output "public" {
+  value = data.aws_subnet_ids.public.ids
+}
+
+output "private" {
+  value = data.aws_subnet_ids.private.ids
+}
