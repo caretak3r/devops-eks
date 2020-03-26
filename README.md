@@ -15,6 +15,7 @@ using Terraform to deploy an EKS cluster and nodegroups, which follows environme
  - Kiali (istio)
  - grafana + prometheus
  - Calico
+ - https://krew.sigs.k8s.io/docs/user-guide/quickstart/
 
 
 ## Strategy
